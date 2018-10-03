@@ -1,0 +1,47 @@
+version: "3"
+services:
+
+  redis:
+    restart: always
+    build:
+      context: redis
+    volumes:
+      - ${DATA_DIR}/redis/:/data/:rw
+
+  client:
+    restart: always
+    image: chris13524/privatepm-client:latest
+    environment:
+      - API=//api.$DOMAIN
+
+  server:
+    restart: always
+    image: chris13524/privatepm-server:latest
+    environment:
+      REDIS_URL: redis://redis:6379
+
+  appupdater:
+    restart: always
+    image: stixes/docker-hook:latest
+    ports:
+      - 8555:8555
+    environment:
+      CMD: sh /update.sh
+      TOKEN: $UPDATE_TOKEN
+    working_dir: /
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./update.sh:/update.sh:ro
+      - ./docker-compose.yml:/docker-compose.yml:ro
+
+  exposer:
+    restart: always
+    image: valian/docker-nginx-auto-ssl
+    environment:
+      - ALLOWED_DOMAINS=$DOMAIN
+      - SITES=$DOMAIN=client:80;api.$DOMAIN=server:80
+    volumes:
+      - ${DATA_DIR}/exposer/:/etc/resty-auto-ssl/
+    ports:
+      - "80:80"
+      - "443:443"
