@@ -20,13 +20,27 @@ services:
     environment:
       REDIS_URL: redis://redis:6379
 
-  appupdater:
+  appupdater-client:
     restart: always
     image: stixes/docker-hook:latest
     ports:
       - 8555:8555
     environment:
-      CMD: sh /update.sh
+      CMD: sh /update-client.sh
+      TOKEN: $UPDATE_TOKEN
+    working_dir: /
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./update.sh:/update.sh:ro
+      - ./docker-compose.yml:/docker-compose.yml:ro
+
+  appupdater-server:
+    restart: always
+    image: stixes/docker-hook:latest
+    ports:
+      - 8556:8555
+    environment:
+      CMD: sh /update-server.sh
       TOKEN: $UPDATE_TOKEN
     working_dir: /
     volumes:
