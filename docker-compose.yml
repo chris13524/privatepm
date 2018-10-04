@@ -26,13 +26,12 @@ services:
     ports:
       - 8555:8555
     environment:
-      CMD: sh /update-client.sh
+      CMD: sh /work/update-client.sh
       TOKEN: $UPDATE_TOKEN
-    working_dir: /
+    working_dir: /work
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./update-client.sh:/update-client.sh:ro
-      - ./docker-compose.yml:/docker-compose.yml:ro
+      - .:/work
 
   appupdater-server:
     restart: always
@@ -40,13 +39,12 @@ services:
     ports:
       - 8556:8555
     environment:
-      CMD: sh /update-server.sh
+      CMD: sh /work/update-server.sh
       TOKEN: $UPDATE_TOKEN
-    working_dir: /
+    working_dir: /work
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./update-server.sh:/update-server.sh:ro
-      - ./docker-compose.yml:/docker-compose.yml:ro
+      - .:/work
 
   exposer:
     restart: always

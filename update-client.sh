@@ -3,4 +3,4 @@
 set -e
 
 docker-compose -p privatepm pull
-docker-compose -p privatepm up -d privatepm-client
+docker-compose -p privatepm up -d client
