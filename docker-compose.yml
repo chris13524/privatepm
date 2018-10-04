@@ -31,7 +31,7 @@ services:
     working_dir: /
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./update.sh:/update.sh:ro
+      - ./update-client.sh:/update-client.sh:ro
       - ./docker-compose.yml:/docker-compose.yml:ro
 
   appupdater-server:
@@ -45,7 +45,7 @@ services:
     working_dir: /
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./update.sh:/update.sh:ro
+      - ./update-server.sh:/update-server.sh:ro
       - ./docker-compose.yml:/docker-compose.yml:ro
 
   exposer:
