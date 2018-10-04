@@ -9,9 +9,9 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {MainComponent} from "./main/main.component";
 import {FormsModule} from "@angular/forms";
 import {DisplayComponent} from "./main/display/display.component";
-import {HttpModule} from "@angular/http";
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
+import {PrivatepmService} from "./privatepm.service";
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import {HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     NgbModule
   ],
-  providers: [],
+  providers: [PrivatepmService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
