@@ -56,10 +56,15 @@ export class PrivatepmService {
    * Stores the encryption key on the server using the provided ID.
    * @param {string} id
    * @param {string} key
+   * @param expiration
    * @returns {Promise<void>}
    */
-  private async storeKey(id: string, key: string): Promise<void> {
-    return this.http.put(environment.api + "/" + id, key, {responseType: "text"})
+  private async storeKey(id: string, key: string, expiration?: number): Promise<void> {
+    let url = environment.api + "/" + id;
+    if (expiration != null) {
+      url += "?expiration=" + expiration;
+    }
+    return this.http.put(url, key, {responseType: "text"})
       .forEach(() => {
         // cannot use toPromise() as that would result in a Promise<string> and we need a Promise<void>
         // using forEach() seems to solve the issue
@@ -78,13 +83,14 @@ export class PrivatepmService {
   /**
    * Given a message, returns the encrypted message.
    * @param {string} message
+   * @param expiration
    * @returns {Promise<string>}
    */
-  public async input(message: string): Promise<string> {
+  public async input(message: string, expiration?: number): Promise<string> {
     let key = this.genKey();
     let encrypted = this.encrypt(message, key);
     let hash = this.hash(encrypted);
-    await this.storeKey(hash, key);
+    await this.storeKey(hash, key, expiration);
     return encrypted;
   }
   

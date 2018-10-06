@@ -19,6 +19,8 @@ services:
     image: chris13524/privatepm-server:latest
     environment:
       REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
 
   appupdater-client:
     restart: always

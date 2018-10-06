@@ -12,6 +12,7 @@ import {DisplayComponent} from "./main/display/display.component";
 import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
 import {PrivatepmService} from "./privatepm.service";
+import {AboutComponent} from "./main/about/about.component";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import {PrivatepmService} from "./privatepm.service";
     MainComponent,
     HomeComponent,
     DisplayComponent,
+    AboutComponent,
     NotFoundComponent
   ],
   imports: [

@@ -1,0 +1,33 @@
+<h2>About</h2>
+<p>
+  PrivatePM is a simple service that encrypts a message, but only allows its decryption for a set period of time.
+  Messages are <i>never</i> sent to the server. Encryption is done completely client side. In order to enforce the
+  expiration time, the encryption key is stored on the server. The actual encrypted message is stored in the URL.
+</p>
+<p>
+  Note that this service is not intended to store large files (only short messages such as passwords). As URL lengths
+  are often limited, you may only have up to 2k characters in certain browsers (though feel free to max out its
+  capabilities as it makes no difference to us). You should use other forms of encryption for
+  anything super sensitive or larger in size.
+</p>
+
+<h2>Protocol</h2>
+<p>Encryption:</p>
+<ol>
+  <li>The client generates a random encryption key and encrypts the message.</li>
+  <li>The client hashes the encrypted message.</li>
+  <li>The client sends both the hash and the encryption key to the server for storage.</li>
+  <li>At this point, you may share the encrypted message.</li>
+</ol>
+<p>Decryption:</p>
+<ol>
+  <li>The client hashes the encrypted message.</li>
+  <li>The client sends the hash to the server and gets back the encryption key.</li>
+  <li>The client decrypts the message.</li>
+</ol>
+
+<h2>Specifics</h2>
+<p>
+  We use AES for encryption and SHA-256 for hashing. The server uses a simple Redis store for mapping the hashes to
+  encryption keys. Expiration is done using the native Redis expiration feature.
+</p>

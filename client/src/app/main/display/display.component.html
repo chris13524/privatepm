@@ -1,2 +1,23 @@
-<textarea class="form-control"
-          [ngModel]="message" readonly></textarea>
+<div class="alert alert-success" *ngIf="generated">
+  Your message has been encrypted successfully! You may now share the URL of this page.
+</div>
+
+<ng-container *ngIf="model.status == 'pending'; else ready">
+  Please stand by...
+</ng-container>
+<ng-template #ready>
+  <ng-container *ngIf="model.status == 'notFound'; else success">
+    <div class="alert alert-danger">
+      The message you've requested could not be found, or has expired.
+    </div>
+  </ng-container>
+  <ng-template #success>
+    <div class="form-group">
+      <label for="message">
+        You've got a message:
+      </label>
+      <textarea class="form-control" id="message"
+                [ngModel]="model.message" readonly></textarea>
+    </div>
+  </ng-template>
+</ng-template>

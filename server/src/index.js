@@ -14,6 +14,7 @@ app.get("/", (req, res) => {
 app.get("/:key", (req, res) => {
 	let key = req.params.key;
 	client.get(key, (err, reply) => {
+		res.set("Cache-Control", "private, no-cache, no-store, max-age=0");
 		if (reply != null) {
 			res.send(reply);
 		} else {
@@ -25,7 +26,7 @@ app.get("/:key", (req, res) => {
 app.put("/:key", (req, res) => {
 	let key = req.params.key;
 	const max = 604800; // 7 days
-	let expire = Math.max(Math.min(req.query.expire || max, max), 0);
+	let expire = Math.max(Math.min(req.query.expiration || max, max), 0);
 	let body = "";
 	req.on("data", chunk => body += chunk);
 	req.on("end", () => {

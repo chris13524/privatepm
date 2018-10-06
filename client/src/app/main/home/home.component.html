@@ -1,4 +1,4 @@
-<form (submit)="submit()">
+<form (submit)="submit()" #form="ngForm">
   <div class="form-group">
     <label for="message">
       Enter the text you'd like to encrypt:
@@ -7,7 +7,43 @@
               [(ngModel)]="message" required></textarea>
   </div>
   <div class="form-group">
-    <button type="submit" class="btn btn-primary">
+    <label for="expiration">
+      Expire after:
+    </label>
+    <select class="custom-select" id="expiration" name="expiration"
+            [(ngModel)]="expiration" required>
+      <optgroup label="Seconds">
+        <option [value]="15">15 seconds</option>
+        <option [value]="30">30 seconds</option>
+      </optgroup>
+      <optgroup label="Minutes">
+        <option [value]="60 * 1">1 minute</option>
+        <option [value]="60 * 2">2 minutes</option>
+        <option [value]="60 * 5">5 minutes</option>
+        <option [value]="60 * 15">15 minutes</option>
+        <option [value]="60 * 30">30 minutes</option>
+      </optgroup>
+      <optgroup label="Hours">
+        <option [value]="60 * 60 * 1">1 hour</option>
+        <option [value]="60 * 60 * 2">2 hours</option>
+        <option [value]="60 * 60 * 3">3 hours</option>
+        <option [value]="60 * 60 * 6">6 hours</option>
+        <option [value]="60 * 60 * 12">12 hours</option>
+      </optgroup>
+      <optgroup label="Days">
+        <option [value]="60 * 60 * 24 * 1">1 day</option>
+        <option [value]="60 * 60 * 24 * 2">2 day</option>
+        <option [value]="60 * 60 * 24 * 3">3 day</option>
+        <option [value]="60 * 60 * 24 * 4">4 day</option>
+        <option [value]="60 * 60 * 24 * 5">5 day</option>
+        <option [value]="60 * 60 * 24 * 6">6 day</option>
+        <option [value]="60 * 60 * 24 * 7">7 day</option>
+      </optgroup>
+    </select>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-lg btn-success"
+            [disabled]="!form.valid">
       Encrypt!
     </button>
   </div>
