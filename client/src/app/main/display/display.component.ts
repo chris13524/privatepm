@@ -19,33 +19,29 @@ export class DisplayComponent implements OnInit, OnDestroy {
   }
   
   private queryParamSubscription: Subscription | null;
-  private paramSubscription: Subscription | null;
+  private fragmentSubscription: Subscription | null;
   
   ngOnInit(): void {
-    this.queryParamSubscription = this.route.queryParamMap.subscribe(params => {
-      // The `generated` parameter indicates that we just generated it and aren't being linked later on
-      let generated = params.get("generated");
-      if (generated) {
-        // Record that this was generated
-        this.generated = true;
-        // Remove the parameter in the URL
-        this.router.navigate([], {queryParams: {generated: null}, queryParamsHandling: "merge"});
-      } else {
-        this.paramSubscription = this.route.paramMap.subscribe(params => {
-          // Retrieve the encrypted value
-          let encrypted = params.get("encrypted");
-          if (encrypted == null) throw new Error();
-          // Decrypt it
-          this.process(encrypted);
-        });
-      }
+    this.fragmentSubscription = this.route.fragment.subscribe(fragment => {
+      this.queryParamSubscription = this.route.queryParamMap.subscribe(params => {
+        // The `generated` parameter indicates that we just generated it and aren't being linked later on
+        let generated = params.get("generated");
+        if (generated) {
+          // Record that this was generated
+          this.generated = true;
+          // Remove the parameter in the URL
+          this.router.navigate([], {fragment: fragment, queryParams: {generated: null}, queryParamsHandling: "merge"});
+        } else {
+          // Decrypt the fragment
+          this.process(fragment);
+        }
+      });
     });
-    
   }
   
   ngOnDestroy(): void {
     if (this.queryParamSubscription != null) this.queryParamSubscription.unsubscribe();
-    if (this.paramSubscription != null) this.paramSubscription.unsubscribe();
+    if (this.fragmentSubscription != null) this.fragmentSubscription.unsubscribe();
   }
   
   generated = false;

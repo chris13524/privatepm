@@ -25,7 +25,7 @@ export class HomeComponent {
     // Encrypt the message
     this.ppm.input(this.message, this.expiration).then(encrypted => {
       // Navigate the user to the display page
-      this.router.navigate(["d", encrypted], {queryParams: {generated: true}});
+      this.router.navigate(["d"], {fragment: encrypted, queryParams: {generated: true}});
     });
   }
 }

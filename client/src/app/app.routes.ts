@@ -11,7 +11,7 @@ const routes: Routes = [
     path: "", component: MainComponent, children: [
       {path: "", component: HomeComponent},
       {path: "about", component: AboutComponent},
-      {path: "d/:encrypted", component: DisplayComponent}
+      {path: "d", component: DisplayComponent}
     ]
   },
   {path: "**", component: NotFoundComponent},
