@@ -15,7 +15,7 @@ export class HomeComponent {
               private ppm: PrivatepmService) {
     pageHeaders(title, meta,
       "PrivatePM",
-      "A service that encrypts your messages and only allows decryption for the time you specify.");
+      "A simple tool that encrypts a message, but only allows decryption for a period of time.");
   }
   
   message = "";
