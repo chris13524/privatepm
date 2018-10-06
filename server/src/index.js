@@ -12,11 +12,18 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:key", (req, res) => {
+	res.set("Cache-Control", "private, no-cache, no-store, max-age=0");
 	let key = req.params.key;
-	client.get(key, (err, reply) => {
-		res.set("Cache-Control", "private, no-cache, no-store, max-age=0");
+	client.ttl(key, (err, reply) => {
 		if (reply != null) {
-			res.send(reply);
+			let expiration = reply;
+			client.get(key, (err, reply) => {
+				if (reply != null) {
+					res.send({expiration: expiration, key: reply});
+				} else {
+					res.sendStatus(404);
+				}
+			});
 		} else {
 			res.sendStatus(404);
 		}

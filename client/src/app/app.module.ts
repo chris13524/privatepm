@@ -13,6 +13,7 @@ import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
 import {PrivatepmService} from "./privatepm.service";
 import {AboutComponent} from "./main/about/about.component";
+import {TimePipe} from "./time.pipe";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {AboutComponent} from "./main/about/about.component";
     HomeComponent,
     DisplayComponent,
     AboutComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    TimePipe
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'albright-lions'}),

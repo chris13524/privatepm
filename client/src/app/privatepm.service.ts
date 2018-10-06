@@ -76,8 +76,8 @@ export class PrivatepmService {
    * @param {string} id
    * @returns {Promise<string | -1>}
    */
-  private async getKey(id: string): Promise<string> {
-    return this.http.get<string>(environment.api + "/" + id, {responseType: <any>"text"}).toPromise();
+  private async getKey(id: string): Promise<{ expiration: number, key: string }> {
+    return this.http.get<{ expiration: number, key: string }>(environment.api + "/" + id).toPromise();
   }
   
   /**
@@ -99,9 +99,9 @@ export class PrivatepmService {
    * @param {string} encrypted
    * @returns {Promise<string | -1>}
    */
-  public async output(encrypted: string): Promise<string> {
+  public async output(encrypted: string): Promise<{ expiration: number, message: string }> {
     let hash = this.hash(encrypted);
-    let key = await this.getKey(hash);
-    return this.decrypt(encrypted, key);
+    let res = await this.getKey(hash);
+    return {expiration: res.expiration, message: this.decrypt(encrypted, res.key)};
   }
 }

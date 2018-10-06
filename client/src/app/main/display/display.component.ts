@@ -48,22 +48,26 @@ export class DisplayComponent implements OnInit, OnDestroy {
   
   model: {
     status: "success" | "pending" | "notFound",
-    message: string
+    message: string,
+    expiration: number
   } = {
     status: "pending",
-    message: ""
+    message: "",
+    expiration: 0
   };
   
   private process(encrypted: string): void {
     this.ppm.output(encrypted).then(result => {
       this.model = {
         status: "success",
-        message: result
+        message: result.message,
+        expiration: result.expiration
       };
     }).catch(() => {
       this.model = {
         status: "notFound",
-        message: ""
+        message: "",
+        expiration: 0
       };
     });
   }

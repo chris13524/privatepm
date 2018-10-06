@@ -18,6 +18,7 @@
       </label>
       <textarea class="form-control" id="message"
                 [ngModel]="model.message" readonly></textarea>
+      Note that this message will self-destruct in {{model.expiration | time}}.
     </div>
   </ng-template>
 </ng-template>
