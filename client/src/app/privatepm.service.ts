@@ -13,7 +13,14 @@ export class PrivatepmService {
    * @returns {string}
    */
   private genKey(): string {
-    return CryptoJS.lib.WordArray.random(256).toString();
+    return (<any>CryptoJS.lib.WordArray.random(128 / 8)).toString(CryptoJS.enc.Hex) + (<any>CryptoJS.lib.WordArray.random(128 / 8)).toString(CryptoJS.enc.Hex) + (<any>CryptoJS.lib.WordArray.random(128 / 8)).toString(CryptoJS.enc.Hex);
+  }
+  
+  private generateKey(salt: string, passPhrase: string) {
+    return CryptoJS.PBKDF2(
+      passPhrase,
+      CryptoJS.enc.Hex.parse(salt),
+      {keySize: 4, iterations: 1000});
   }
   
   /**
@@ -23,8 +30,16 @@ export class PrivatepmService {
    * @returns {string}
    */
   private encrypt(message: string, key: string): string {
-    return CryptoJS.AES.encrypt(message, key)
-      .toString()
+    let iv = key.substring(0, 32);
+    let salt = key.substring(32, 64);
+    let passPhrase = key.substring(64);
+    
+    let key2 = this.generateKey(salt, passPhrase);
+    let encrypted = CryptoJS.AES.encrypt(
+      message,
+      key2,
+      {iv: CryptoJS.enc.Hex.parse(iv)});
+    return (<any>encrypted.ciphertext).toString(CryptoJS.enc.Base64)
       .replace(/\//g, "_")
       .replace(/\+/g, ".")
       .replace(/=/g, "-");
@@ -37,10 +52,22 @@ export class PrivatepmService {
    * @returns {string}
    */
   private decrypt(encrypted: string, key: string): string {
-    return CryptoJS.AES.decrypt(encrypted
-      .replace(/_/g, "/")
-      .replace(/\./g, "+")
-      .replace(/-/g, "="), key).toString(CryptoJS.enc.Utf8);
+    let iv = key.substring(0, 32);
+    let salt = key.substring(32, 64);
+    let passPhrase = key.substring(64);
+    
+    let key2 = this.generateKey(salt, passPhrase);
+    let cipherParams = (<any>CryptoJS.lib).CipherParams.create({
+      ciphertext: CryptoJS.enc.Base64.parse(encrypted
+        .replace(/_/g, "/")
+        .replace(/\./g, "+")
+        .replace(/-/g, "="))
+    });
+    let decrypted = CryptoJS.AES.decrypt(
+      cipherParams,
+      key2,
+      {iv: CryptoJS.enc.Hex.parse(iv)});
+    return decrypted.toString(CryptoJS.enc.Utf8);
   }
   
   /**
