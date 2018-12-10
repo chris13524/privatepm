@@ -1,5 +1,13 @@
 <div class="alert alert-success" *ngIf="generated">
-  Your message has been encrypted successfully! You may now share the URL of this page.
+  <p>Your message has been encrypted successfully! You may now share the address of this page:</p>
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-secondary" type="button" (click)="copyAddress()">
+        <fa-icon [icon]="faCopy"></fa-icon> Copy
+      </button>
+    </div>
+    <input class="form-control" type="text" readonly [ngModel]="address" #copyArea>
+  </div>
 </div>
 
 <ng-container *ngIf="model.status == 'pending'; else ready">

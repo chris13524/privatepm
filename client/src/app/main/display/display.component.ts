@@ -1,14 +1,17 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs/index";
 import {PrivatepmService} from "../../privatepm.service";
+import {faCopy} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   templateUrl: "./display.component.html",
   styleUrls: ["./display.component.css"]
 })
 export class DisplayComponent implements OnInit, OnDestroy {
+  faCopy = faCopy;
+  
   constructor(private title: Title,
               private meta: Meta,
               private route: ActivatedRoute,
@@ -24,6 +27,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fragmentSubscription = this.route.fragment.subscribe(fragment => {
       this.queryParamSubscription = this.route.queryParamMap.subscribe(params => {
+        this.address = window.location.href;
         // The `generated` parameter indicates that we just generated it and aren't being linked later on
         let generated = params.get("generated");
         if (generated) {
@@ -45,6 +49,8 @@ export class DisplayComponent implements OnInit, OnDestroy {
   }
   
   generated = false;
+  address = "";
+  @ViewChild("copyArea") copyArea: ElementRef;
   
   model: {
     status: "success" | "pending" | "notFound",
@@ -70,5 +76,19 @@ export class DisplayComponent implements OnInit, OnDestroy {
         expiration: 0
       };
     });
+  }
+  
+  copyAddress(): void {
+    const copyTextarea = this.copyArea.nativeElement;
+    copyTextarea.focus();
+    copyTextarea.select();
+    
+    try {
+      if (!document.execCommand("copy")) {
+        alert("Failed to copy.");
+      }
+    } catch (err) {
+      alert("Failed to copy.");
+    }
   }
 }

@@ -14,6 +14,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {PrivatepmService} from "./privatepm.service";
 import {AboutComponent} from "./main/about/about.component";
 import {TimePipe} from "./time.pipe";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {TimePipe} from "./time.pipe";
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    FontAwesomeModule
   ],
   providers: [PrivatepmService],
   bootstrap: [AppComponent]
