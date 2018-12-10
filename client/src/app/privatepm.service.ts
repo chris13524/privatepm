@@ -39,10 +39,7 @@ export class PrivatepmService {
       message,
       key2,
       {iv: CryptoJS.enc.Hex.parse(iv)});
-    return (<any>encrypted.ciphertext).toString(CryptoJS.enc.Base64)
-      .replace(/\//g, "_")
-      .replace(/\+/g, ".")
-      .replace(/=/g, "-");
+    return (<any>encrypted.ciphertext).toString(CryptoJS.enc.Base64);
   }
   
   /**

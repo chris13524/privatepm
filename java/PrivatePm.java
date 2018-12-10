@@ -53,7 +53,7 @@ public class PrivatePm {
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, key2, new IvParameterSpec(DatatypeConverter.parseHexBinary(iv)));
 		byte[] encrypted = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
-		return Base64.getEncoder().encodeToString(encrypted).replaceAll("/", "_").replaceAll("\\+", ".").replaceAll("=", "-");
+		return Base64.getEncoder().encodeToString(encrypted);
 	}
 	
 	private String decrypt(String encrypted, String key) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException, InvalidAlgorithmParameterException {
