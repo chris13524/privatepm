@@ -35,7 +35,12 @@ export class DisplayComponent implements OnInit, OnDestroy {
           // Record that this was generated
           this.generated = true;
           // Remove the parameter in the URL
-          this.router.navigate([], {fragment: fragment, queryParams: {generated: null}, queryParamsHandling: "merge"});
+          this.router.navigate([], {
+            fragment: fragment,
+            queryParams: {generated: null},
+            queryParamsHandling: "merge",
+            replaceUrl:true
+          });
         } else {
           // Decrypt the fragment
           this.process(fragment);
