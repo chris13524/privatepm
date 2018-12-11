@@ -1,3 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "~bootstrap/dist/css/bootstrap.min.css";
+
+a.link-reset {
+  color: #0275d8 !important;
+}
+
+a.link-reset:hover {
+   text-decoration: underline !important;
+   cursor: pointer !important;
+ }
