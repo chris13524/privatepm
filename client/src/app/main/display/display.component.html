@@ -27,6 +27,7 @@
       <textarea class="form-control" id="message"
                 [ngModel]="model.message" readonly></textarea>
       Note that this message will self-destruct in {{model.expiration | time}}.
+      <button class="btn btn-link" (click)="destroy()">Destroy it now.</button>
     </div>
   </ng-template>
 </ng-template>

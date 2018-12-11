@@ -44,5 +44,11 @@ app.put("/:key", (req, res) => {
 	});
 });
 
+app.delete("/:key", (req, res) => {
+	let key = req.params.key;
+	client.del(key);
+	res.sendStatus(200);
+});
+
 let listen = process.env.LISTEN || 8181;
 app.listen(listen);

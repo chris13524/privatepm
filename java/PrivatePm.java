@@ -185,4 +185,24 @@ public class PrivatePm {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public void destroy(String encrypted) {
+		String hash = hash(encrypted);
+		
+		HttpURLConnection connection = null;
+		try {
+			connection = (HttpURLConnection) new URL(this.api + "/" + hash).openConnection();
+			connection.setRequestMethod("DELETE");
+			connection.setDoOutput(false);
+			
+			int responseCode = connection.getResponseCode();
+			if (responseCode != 200) {
+				throw new RuntimeException("Failed to destroy. Got response code: " + responseCode);
+			}
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+	}
 }

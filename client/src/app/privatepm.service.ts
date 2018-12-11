@@ -128,4 +128,14 @@ export class PrivatepmService {
     let res = await this.getKey(hash);
     return {expiration: res.expiration, message: this.decrypt(encrypted, res.key)};
   }
+  
+  /**
+   * Given an encrypted message, destroy it on the server.
+   * @param {string} encrypted
+   * @returns {Promise<void>}
+   */
+  public async destroy(encrypted: string): Promise<void> {
+    let id = this.hash(encrypted);
+    return this.http.delete<void>(environment.api + "/" + id).toPromise();
+  }
 }

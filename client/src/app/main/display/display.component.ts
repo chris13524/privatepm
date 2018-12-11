@@ -26,6 +26,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.fragmentSubscription = this.route.fragment.subscribe(fragment => {
+      this.encrypted = fragment;
       this.queryParamSubscription = this.route.queryParamMap.subscribe(params => {
         this.address = window.location.href;
         // The `generated` parameter indicates that we just generated it and aren't being linked later on
@@ -51,6 +52,8 @@ export class DisplayComponent implements OnInit, OnDestroy {
   generated = false;
   address = "";
   @ViewChild("copyArea") copyArea: ElementRef;
+  
+  encrypted = "";
   
   model: {
     status: "success" | "pending" | "notFound",
@@ -90,5 +93,11 @@ export class DisplayComponent implements OnInit, OnDestroy {
     } catch (err) {
       alert("Failed to copy.");
     }
+  }
+  
+  destroy(): void {
+    this.ppm.destroy(this.encrypted)
+      .then(() => () => this.router.navigate(["/"]))
+      .catch(() => this.router.navigate(["/"]));
   }
 }
