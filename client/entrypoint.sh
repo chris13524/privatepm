@@ -2,6 +2,6 @@
 
 set -e
 
-sed -i -e "s|\$API_SUB|$API|g" /usr/share/nginx/html/*
+sed -i -e "s|\$API_SUB|$API|g" /usr/share/nginx/html/*.js
 
 exec "$@"
