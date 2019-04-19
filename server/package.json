@@ -9,6 +9,5 @@
     "cors": "2.8.4",
     "redis": "2.8.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
