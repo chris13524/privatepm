@@ -1,0 +1,25 @@
+{
+  "short_name": "PrivatePM",
+  "name": "PrivatePM",
+  "icons": [
+    {
+      "src": "/assets/pwa-icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "display": "standalone",
+
+  "start_url": "/",
+  "scope": "/",
+  "share_target": {
+    "action": "/",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

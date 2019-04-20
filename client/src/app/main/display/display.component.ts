@@ -3,7 +3,7 @@ import {Meta, Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs/index";
 import {PrivatepmService} from "../../privatepm.service";
-import {faCopy} from "@fortawesome/free-solid-svg-icons";
+import {faCopy, faShareAlt} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   templateUrl: "./display.component.html",
@@ -11,6 +11,7 @@ import {faCopy} from "@fortawesome/free-solid-svg-icons";
 })
 export class DisplayComponent implements OnInit, OnDestroy {
   faCopy = faCopy;
+  faShareAlt = faShareAlt;
   
   constructor(private title: Title,
               private meta: Meta,
@@ -25,6 +26,8 @@ export class DisplayComponent implements OnInit, OnDestroy {
   private fragmentSubscription: Subscription | null;
   
   ngOnInit(): void {
+    this.sharingAvailable = "share" in navigator;
+    
     this.fragmentSubscription = this.route.fragment.subscribe(fragment => {
       this.encrypted = fragment;
       this.queryParamSubscription = this.route.queryParamMap.subscribe(params => {
@@ -39,7 +42,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
             fragment: fragment,
             queryParams: {generated: null},
             queryParamsHandling: "merge",
-            replaceUrl:true
+            replaceUrl: true
           });
         } else {
           // Decrypt the fragment
@@ -70,6 +73,8 @@ export class DisplayComponent implements OnInit, OnDestroy {
     expiration: 0
   };
   
+  sharingAvailable = false;
+  
   private process(encrypted: string): void {
     this.ppm.output(encrypted).then(result => {
       this.model = {
@@ -87,16 +92,24 @@ export class DisplayComponent implements OnInit, OnDestroy {
   }
   
   copyAddress(): void {
-    const copyTextarea = this.copyArea.nativeElement;
-    copyTextarea.focus();
-    copyTextarea.select();
-    
-    try {
-      if (!document.execCommand("copy")) {
+    if (this.sharingAvailable) {
+      (<any>navigator).share({
+        //title: null,
+        //text: null,
+        url: this.address,
+      }).catch(() => alert("Failed to share."));
+    } else {
+      const copyTextarea = this.copyArea.nativeElement;
+      copyTextarea.focus();
+      copyTextarea.select();
+      
+      try {
+        if (!document.execCommand("copy")) {
+          alert("Failed to copy.");
+        }
+      } catch (err) {
         alert("Failed to copy.");
       }
-    } catch (err) {
-      alert("Failed to copy.");
     }
   }
   

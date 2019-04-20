@@ -3,7 +3,13 @@
   <div class="input-group">
     <div class="input-group-prepend">
       <button class="btn btn-secondary" type="button" (click)="copyAddress()">
-        <fa-icon [icon]="faCopy"></fa-icon> Copy
+        <ng-container *ngIf="sharingAvailable; else copy">
+          <fa-icon [icon]="faShareAlt"></fa-icon>
+        </ng-container>
+        <ng-template #copy>
+          <fa-icon [icon]="faCopy"></fa-icon>
+          Copy
+        </ng-template>
       </button>
     </div>
     <input class="form-control" type="text" readonly [ngModel]="address" #copyArea>
