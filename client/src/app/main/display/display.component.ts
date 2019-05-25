@@ -115,7 +115,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
   
   destroy(): void {
     this.ppm.destroy(this.encrypted)
-      .then(() => () => this.router.navigate(["/"]))
+      .then(() => this.router.navigate(["/"]))
       .catch(() => this.router.navigate(["/"]));
   }
 }

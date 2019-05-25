@@ -96,7 +96,7 @@ export class PrivatepmService {
   }
   
   /**
-   * Given an ID, returns the encryption key stored on the server.
+   * Given an ID, returns the key stored on the server.
    * @param {string} id
    * @returns {Promise<string | -1>}
    */
@@ -105,32 +105,45 @@ export class PrivatepmService {
   }
   
   /**
-   * Given a message, returns the encrypted message.
+   * Given a message, returns the message ID.
    * @param {string} message
    * @param expiration
+   * @param serverSide whether to store the message server-side rather than in the returned key
    * @returns {Promise<string>}
    */
-  public async input(message: string, expiration?: number): Promise<string> {
+  public async input(message: string, expiration?: number, serverSide?: boolean): Promise<string> {
     let key = this.genKey();
+    if (serverSide) key = "=" + key; // prefix the ID with an equals sign to indicate it was stored server side
     let encrypted = this.encrypt(message, key);
-    let hash = this.hash(encrypted);
-    await this.storeKey(hash, key, expiration);
-    return encrypted;
+    if (serverSide) {
+      await this.storeKey(this.hash(key), encrypted, expiration);
+      return key;
+    } else {
+      await this.storeKey(this.hash(encrypted), key, expiration);
+      return encrypted;
+    }
   }
   
   /**
-   * Given an encrypted message, returns the message.
-   * @param {string} encrypted
+   * Given a message key, returns the message.
+   * @param {string} id
    * @returns {Promise<string | -1>}
    */
-  public async output(encrypted: string): Promise<{ expiration: number, message: string }> {
-    let hash = this.hash(encrypted);
-    let res = await this.getKey(hash);
-    return {expiration: res.expiration, message: this.decrypt(encrypted, res.key)};
+  public async output(id: string): Promise<{ expiration: number, message: string }> {
+    const serverSide = await this.getKey(this.hash(id));
+    let decrypted;
+    if (id.startsWith("=")) {
+      // when storing on the server, the ID is the encryption key; decrypt the message (stored server side) with the ID
+      decrypted = this.decrypt(serverSide.key, id);
+    } else {
+      // when storing locally, the ID is the encrypted message; decrypt it with the key stored on the server
+      decrypted = this.decrypt(id, serverSide.key);
+    }
+    return {expiration: serverSide.expiration, message: decrypted};
   }
   
   /**
-   * Given an encrypted message, destroy it on the server.
+   * Given a message ID, destroy it on the server.
    * @param {string} encrypted
    * @returns {Promise<void>}
    */

@@ -1,13 +1,6 @@
 version: "3"
 services:
 
-  redis:
-    restart: always
-    build:
-      context: redis
-    volumes:
-      - ${DATA_DIR}/redis/:/data/:rw
-
   client:
     restart: always
     image: chris13524/privatepm-client:latest
@@ -18,9 +11,11 @@ services:
     restart: always
     image: chris13524/privatepm-server:latest
     environment:
-      REDIS_URL: redis://redis:6379
-    depends_on:
-      - redis
+      - S3_ENDPOINT=$S3_ENDPOINT
+      - S3_KEY_ID=$S3_KEY_ID
+      - S3_KEY_SECRET=$S3_KEY_SECRET
+      - S3_BUCKET=$S3_BUCKET
+      - S3_PREFIX=$S3_PREFIX
 
   appupdater-client:
     restart: always
