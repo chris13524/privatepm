@@ -15,6 +15,7 @@ import {PrivatepmService} from "./privatepm.service";
 import {AboutComponent} from "./main/about/about.component";
 import {TimePipe} from "./time.pipe";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {MessageDisplayComponent} from "./main/message-display.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
     DisplayComponent,
     AboutComponent,
     NotFoundComponent,
-    TimePipe
+    TimePipe,
+    MessageDisplayComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'albright-lions'}),

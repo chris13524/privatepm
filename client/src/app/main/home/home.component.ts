@@ -55,4 +55,25 @@ export class HomeComponent implements OnInit {
       this.router.navigate(["d"], {fragment: encrypted, queryParams: {generated: true}});
     });
   }
+  
+  isFile = false;
+  
+  updateFiles(event: any): void {
+    const input = event.target;
+    const files = input.files;
+    if (files.length == 0) return;
+    
+    let reader = new FileReader();
+    reader.onload = () => {
+      this.message = reader.result == null ? null : reader.result.toString();
+      this.isFile = true;
+    };
+    
+    reader.readAsBinaryString(files[0]);
+  }
+  
+  removeFile(): void {
+    this.message = "";
+    this.isFile = false;
+  }
 }

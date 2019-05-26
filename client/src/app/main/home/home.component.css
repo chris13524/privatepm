@@ -1,5 +1,19 @@
-#message {
-  min-height: 10rem;
+.messageLabel {
+  display: flex;
+}
+
+.messageLabel :nth-child(2) {
+  margin-left: auto;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.messageLabel :nth-child(2):hover {
+  text-decoration: underline;
+}
+
+.messageLabel input[type=file] {
+  display: none;
 }
 
 .btn-success {

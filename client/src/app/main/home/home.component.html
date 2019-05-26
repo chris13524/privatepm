@@ -1,10 +1,17 @@
 <form (submit)="submit()" #form="ngForm">
   <div class="form-group">
-    <label for="message">
-      Enter the text you'd like to encrypt:
-    </label>
-    <textarea class="form-control" id="message" name="message"
-              [(ngModel)]="message" required></textarea>
+    <div class="messageLabel">
+      <label>Enter your message:</label>
+      <ng-container *ngIf="isFile; else notFile">
+        <a class="link-reset" (click)="removeFile()">Remove file</a>
+      </ng-container>
+      <ng-template #notFile>
+        <label for="attach">Use file</label>
+        <input type="file" id="attach" name="attach"
+               (change)="updateFiles($event)">
+      </ng-template>
+    </div>
+    <message-display [(message)]="message"></message-display>
   </div>
   <div class="form-check form-group" *ngIf="message.length > 100 && supportsServerSide">
     <input type="checkbox" class="form-check-input" id="serverSide" name="serverSide" [(ngModel)]="serverSide">

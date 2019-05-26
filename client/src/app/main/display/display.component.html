@@ -27,11 +27,10 @@
   </ng-container>
   <ng-template #success>
     <div class="form-group">
-      <label for="message">
-        You've got a message:
-      </label>
-      <textarea class="form-control" id="message"
-                [ngModel]="model.message" readonly></textarea>
+      <label>You've got a message:</label>
+      <form>
+        <message-display [(message)]="model.message" [readonly]="true"></message-display>
+      </form>
       Note that this message will self-destruct in {{model.expiration | time}}.
       <a class="link-reset" (click)="destroy()">Destroy it now.</a>
     </div>
