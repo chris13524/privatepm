@@ -6,7 +6,7 @@
     <textarea class="form-control" id="message" name="message"
               [(ngModel)]="message" required></textarea>
   </div>
-  <div class="form-check form-group" *ngIf="message.length > 1000 && supportsServerSide">
+  <div class="form-check form-group" *ngIf="message.length > 100 && supportsServerSide">
     <input type="checkbox" class="form-check-input" id="serverSide" name="serverSide" [(ngModel)]="serverSide">
     <label class="form-check-label" for="serverSide">Woah, that's a long message! Store server side?</label>
   </div>
