@@ -18,7 +18,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private ppm: PrivatepmService,
               private router: Router) {
-    title.setTitle("Private PM");
+    title.setTitle("PrivatePM");
     meta.addTag({name: "robots", content: "noindex"});
   }
   
