@@ -88,7 +88,7 @@ public class PrivatePm {
 			connection.getOutputStream().write(key.getBytes(StandardCharsets.UTF_8));
 			
 			int responseCode = connection.getResponseCode();
-			if (responseCode != 200) {
+			if (responseCode / 100 != 2) {
 				throw new RuntimeException("Failed to storeKey. Got response code: " + responseCode);
 			}
 		} finally {
@@ -115,8 +115,8 @@ public class PrivatePm {
 			connection.setRequestMethod("GET");
 			
 			int responseCode = connection.getResponseCode();
-			if (responseCode != 200) {
-				throw new RuntimeException("Failed to storeKey. Got response code: " + responseCode);
+			if (responseCode / 100 != 2) {
+				throw new RuntimeException("Failed to getKey. Got response code: " + responseCode);
 			}
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -196,7 +196,7 @@ public class PrivatePm {
 			connection.setDoOutput(false);
 			
 			int responseCode = connection.getResponseCode();
-			if (responseCode != 200) {
+			if (responseCode / 100 != 2) {
 				throw new RuntimeException("Failed to destroy. Got response code: " + responseCode);
 			}
 		} finally {
