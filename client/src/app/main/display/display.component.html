@@ -31,7 +31,7 @@
       <form>
         <message-display [(message)]="model.message" [readonly]="true"></message-display>
       </form>
-      Note that this message will self-destruct in {{model.expiration | time}}.
+      Note that this message will self-destruct {{model.expiration | time | async}}.
       <a class="link-reset" (click)="destroy()">Destroy it now.</a>
     </div>
   </ng-template>

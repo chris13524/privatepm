@@ -55,6 +55,7 @@ export class DisplayComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.queryParamSubscription != null) this.queryParamSubscription.unsubscribe();
     if (this.fragmentSubscription != null) this.fragmentSubscription.unsubscribe();
+    if (this.timeout != null) clearTimeout(this.timeout);
   }
   
   generated = false;
@@ -75,13 +76,24 @@ export class DisplayComponent implements OnInit, OnDestroy {
   
   sharingAvailable = false;
   
+  timeout: number;
+  
   private process(encrypted: string): void {
+    if (this.timeout) clearTimeout(this.timeout);
     this.ppm.output(encrypted).then(result => {
       this.model = {
         status: "success",
         message: result.message,
-        expiration: result.expiration
+        expiration: Date.now() / 1000 + result.expiration
       };
+      this.timeout = setTimeout(() => {
+        this.model = {
+          status: "notFound",
+          message: "",
+          expiration: 0,
+        };
+        this.generated = false;
+      }, result.expiration * 1000);
     }).catch(() => {
       this.model = {
         status: "notFound",
