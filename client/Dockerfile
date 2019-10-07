@@ -1,10 +1,10 @@
-FROM chris13524/angular-cli:6.2.3
+FROM node:8-alpine
 
 COPY . /app
 WORKDIR /app
 
 RUN npm install && \
-    ng build --prod && \
+    npm run ng build --prod && \
     cp /app/dist/browser/index.html /tmp/app.html && \
     npm run build:prerender
 
