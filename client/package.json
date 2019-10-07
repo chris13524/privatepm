@@ -10,7 +10,7 @@
     "e2e": "ng e2e",
     "build:ssr": "npm run build:client-and-server-bundles && npm run webpack:server",
     "serve:ssr": "node dist/server",
-    "build:client-and-server-bundles": "ng build --prod && ng run privatepm-client:server",
+    "build:client-and-server-bundles": "ng build --prod && cp dist/browser/index.html dist/browser/app.html && ng run privatepm-client:server",
     "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
     "build:prerender": "npm run build:client-and-server-bundles && npm run compile:server && npm run generate:prerender",
     "compile:server": "tsc -p server.tsconfig.json",
