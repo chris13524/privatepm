@@ -17,6 +17,10 @@ h1 {
   margin-bottom: 0;
 }
 
+h1 a {
+  color: inherit;
+}
+
 footer {
   margin-top: 1rem;
   margin-bottom: 1rem;
