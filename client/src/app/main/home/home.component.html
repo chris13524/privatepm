@@ -54,8 +54,13 @@
   </div>
   <div class="form-group">
     <button type="submit" class="btn btn-lg btn-success"
-            [disabled]="!form.valid">
-      Encrypt!
+            [disabled]="!form.valid || encrypting">
+      <ng-container *ngIf="!encrypting">
+        Encrypt!
+      </ng-container>
+      <ng-container *ngIf="encrypting">
+        Encrypting...
+      </ng-container>
     </button>
   </div>
 </form>

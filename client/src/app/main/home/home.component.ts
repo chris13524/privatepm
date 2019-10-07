@@ -47,9 +47,11 @@ export class HomeComponent implements OnInit {
   supportsServerSide = false;
   serverSide = false;
   expiration = 60 * 60 * 24;
+  encrypting = false;
   
   submit() {
     // Encrypt the message
+    this.encrypting = true;
     this.ppm.input(this.message, this.expiration, this.serverSide).then(encrypted => {
       // Navigate the user to the display page
       this.router.navigate(["d"], {fragment: encrypted, queryParams: {generated: true}});
