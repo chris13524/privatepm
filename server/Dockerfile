@@ -5,6 +5,7 @@ WORKDIR /app
 
 RUN npm install
 
+RUN apk add curl
 HEALTHCHECK --timeout=5s CMD curl -f http://localhost:80 || exit 1
 
 ENV LISTEN=80
